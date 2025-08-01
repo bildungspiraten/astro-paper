@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>MULTITOOLIGAN ASCII-GENERATOR</title>
+  <style>
+    body { margin: 0; padding: 1rem; background: black; color: #00FF00; font-family: monospace; display: flex; flex-direction: column; height: 100vh; }
+    header { background: #111; padding: 1rem; font-size: 1.5rem; border-bottom: 1px solid #333; text-align: center; }
+    textarea { flex:1; width:100%; resize:none; background:#000; color:#0f0; border:none; font-family:monospace; font-size:16px; outline:none; }
+    footer { background:#111; padding:.5rem; display:flex; gap:.5rem; align-items:center; }
+    button, select { background:#222; color:#0f0; border:1px solid #0f0; font-family:monospace; cursor:pointer; padding:.3rem .8rem; }
+    button:hover, select:hover { background:#0f0; color:#000; }
+  </style>
+</head>
+<body>
+  <header>MULTITOOLIGAN ASCII-GENERATOR</header>
+  <textarea id="editor" placeholder="ASCII eingeben oder =ZEICHNUNG= starten..."></textarea>
+  <footer>
+    <button onclick="download()">⤓ TXT export</button>
+    <select onchange="changeTheme(this.value)">
+      <option value="green">🟢 Green</option>
+      <option value="amber">🟠 Amber</option>
+      <option value="white">⚪ White</option>
+    </select>
+    <button onclick="typewriterSample()">⌨️ Demo</button>
+  </footer>
+  <script>
+    function download() {
+      const t = document.getElementById("editor").value;
+      const b = new Blob([t], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(b); a.download = "ascii.txt";
+      a.click();
+    }
+    function changeTheme(v) {
+      const c = { green:"#0f0", amber:"#ffbf00", white:"#fff" }[v] || "#0f0";
+      document.body.style.color = c;
+      document.getElementById("editor").style.color = c;
+    }
+    function typewriterSample(){
+      const sample = `WELCOME TO MULTITOOLIGAN ASCII\nTYPEWRITER DEMO TEST\n...`;
+      let i=0, ed=document.getElementById("editor");
+      ed.value = "";
+      const iv = setInterval(()=>{
+        ed.value += sample.charAt(i++);
+        if(i >= sample.length) clearInterval(iv);
+      }, 20);
+    }
+  </script>
+</body>
+</html>
